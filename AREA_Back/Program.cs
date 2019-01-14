@@ -35,11 +35,16 @@ namespace AREA_Back
 
         private static void RunActions()
         {
-            Konachan k = new Konachan("Xwilarg");
+            IAction[] actions = new IAction[]
+            {
+                new Konachan("Xwilarg"),
+                new GitHub("Xwilarg", "AREA_Back")
+            };
             Reactions.Discord reaction = new Reactions.Discord();
             while (Thread.CurrentThread.IsAlive)
             {
-                k.Update(reaction.Callback);
+                foreach (IAction a in actions)
+                    a.Update(reaction.Callback);
             }
         }
     }
