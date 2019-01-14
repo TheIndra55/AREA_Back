@@ -1,9 +1,6 @@
-﻿using Newtonsoft.Json;
-using Octokit;
+﻿using Octokit;
 using System;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
 
 namespace AREA_Back.Action
 {
@@ -14,7 +11,7 @@ namespace AREA_Back.Action
             this.username = username;
             this.project = project;
             client = new GitHubClient(new ProductHeaderValue("AREA"));
-            token = File.ReadAllText("Keys/github.txt");
+            client.Credentials = new Credentials(File.ReadAllText("Keys/github.txt"));
             lastMessage = client.Repository.Commit.GetAll(username, project).GetAwaiter().GetResult()[0].Commit.Message;
             lastRequest = DateTime.Now;
         }
