@@ -23,11 +23,11 @@ namespace AREA_Back.Action
         {
             if (DateTime.Now.Subtract(lastRequest).TotalSeconds > Constants.timeRef)
             {
-                var commit = client.Repository.Commit.GetAll(username, project).GetAwaiter().GetResult()[0].Commit;
-                string msg = commit.Message;
+                var commit = client.Repository.Commit.GetAll(username, project).GetAwaiter().GetResult()[0];
+                string msg = commit.Commit.Message;
                 if (msg != lastMessage)
                 {
-                    action(msg, commit.User.AvatarUrl);
+                    action(msg, commit.Author.AvatarUrl);
                     lastMessage = msg;
                 }
                 lastRequest = DateTime.Now;
