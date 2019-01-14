@@ -38,7 +38,8 @@ namespace AREA_Back
             IAction[] actions = new IAction[]
             {
                 new Konachan("Xwilarg"),
-                new GitHub("Xwilarg", "AREA_Back")
+                new GitHub("Xwilarg", "AREA_Back"),
+                new NHentai("84616/zirk")
             };
             Reactions.Discord reaction = new Reactions.Discord();
             while (Thread.CurrentThread.IsAlive)
