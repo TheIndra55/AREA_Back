@@ -1,8 +1,6 @@
 ﻿using AREA_Back.Action;
-using Discord.Webhook;
 using Nancy.Hosting.Self;
 using System;
-using System.IO;
 using System.Threading;
 
 namespace AREA_Back
@@ -37,12 +35,11 @@ namespace AREA_Back
 
         private static void RunActions()
         {
-            string[] webhook = File.ReadAllLines("Keys/webhook.txt");
-            DiscordWebhookClient webhookClient = new DiscordWebhookClient(ulong.Parse(webhook[0]), webhook[1]);
             Konachan k = new Konachan("Xwilarg");
+            Reactions.Discord reaction = new Reactions.Discord();
             while (Thread.CurrentThread.IsAlive)
             {
-                k.Update(webhookClient);
+                k.Update(reaction.Callback);
             }
         }
     }

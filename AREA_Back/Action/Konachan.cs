@@ -1,17 +1,14 @@
-﻿using Discord;
-using Discord.Webhook;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 
 namespace AREA_Back.Action
 {
-    public class Konachan
+    public class Konachan : IAction
     {
         public Konachan(string username)
         {
             this.username = username;
-            secRef = 30f;
             using (HttpClient hc = new HttpClient())
             {
                 dynamic json = JsonConvert.DeserializeObject(hc.GetStringAsync("http://konachan.net/post.json?tags=vote%3A3%3A" + username).GetAwaiter().GetResult());
@@ -20,9 +17,9 @@ namespace AREA_Back.Action
             lastRequest = DateTime.Now;
         }
 
-        public void Update(DiscordWebhookClient webhookClient)
+        public void Update(Action<string, string> action)
         {
-            if (DateTime.Now.Subtract(lastRequest).TotalSeconds > secRef)
+            if (DateTime.Now.Subtract(lastRequest).TotalSeconds > Constants.timeRef)
             {
                 int currCount;
                 dynamic json;
@@ -33,26 +30,10 @@ namespace AREA_Back.Action
                 }
                 if (currCount != lastCount)
                 {
-                    Console.WriteLine(json[json.Count - 1].file_url);
                     if (currCount < lastCount)
-                        webhookClient.SendMessageAsync("", false, new Embed[]
-                        {
-                            new EmbedBuilder()
-                            {
-                                Title = username + " removed an image from their favorite.",
-                                Color = Color.Blue
-                            }.Build()
-                        });
+                        action(username + " removed an image from their favorite.", null);
                     else
-                        webhookClient.SendMessageAsync("", false, new Embed[]
-                        {
-                            new EmbedBuilder()
-                            {
-                                Title = username + " added an image to their favorite.",
-                                ThumbnailUrl = json[json.Count - 1].file_url,
-                                Color = Color.Blue
-                            }.Build()
-                        });
+                        action(username + " added an image to their favorite.", (string)json[json.Count - 1].file_url);
                     lastCount = currCount;
                 }
                 lastRequest = DateTime.Now;
@@ -62,6 +43,5 @@ namespace AREA_Back.Action
         private string username;
         private int lastCount;
         private DateTime lastRequest;
-        private readonly float secRef;
     }
 }
