@@ -9,7 +9,7 @@ namespace AREA_Back.Action
 {
     class NHentai : IAction
     {
-        public NHentai(string username)
+        public NHentai(string username) : base(5f)
         {
             this.username = username;
             realUsername = username.Split('/').Last();
@@ -18,26 +18,22 @@ namespace AREA_Back.Action
             d2 = v.Item2;
         }
 
-        public void Update(Action<string, string> action)
+        public override void InternalUpdate(Action<string, string> action)
         {
-            if (DateTime.Now.Subtract(lastRequest).TotalSeconds > Constants.timeRef)
+            var v = GetFirstsDoujinshiAsync().GetAwaiter().GetResult();
+            if ((d1 == null && v.Item1 != null)
+                || (d1.Value == v.Item2))
             {
-                var v = GetFirstsDoujinshiAsync().GetAwaiter().GetResult();
-                if ((d1 == null && v.Item1 != null)
-                    || (d1.Value == v.Item2))
-                {
-                    action(realUsername + " added a doujinshi to their favorite: " + v.Item1.Value.Name, v.Item1.Value.Url);
-                    d1 = v.Item1;
-                    d2 = v.Item2;
-                }
-                else if ((d1 != null && v.Item1 == null)
-                    || (d2.Value == v.Item1))
-                {
-                    action(realUsername + " removed a doujinshi from their favorite.", null);
-                    d1 = v.Item1;
-                    d2 = v.Item2;
-                }
-                lastRequest = DateTime.Now;
+                action(realUsername + " added a doujinshi to their favorite: " + v.Item1.Value.Name, v.Item1.Value.Url);
+                d1 = v.Item1;
+                d2 = v.Item2;
+            }
+            else if ((d1 != null && v.Item1 == null)
+                || (d2.Value == v.Item1))
+            {
+                action(realUsername + " removed a doujinshi from their favorite.", null);
+                d1 = v.Item1;
+                d2 = v.Item2;
             }
         }
 
@@ -63,8 +59,6 @@ namespace AREA_Back.Action
                 Url = (match[1].Value.StartsWith("//") ? "http:" : "") + match[1].Value
             });
         }
-
-        private DateTime lastRequest;
         private Doujinshi? d1;
         private Doujinshi? d2;
         private string username;

@@ -6,36 +6,29 @@ namespace AREA_Back.Action
 {
     public class GitHub : IAction
     {
-        public GitHub(string username, string project)
+        public GitHub(string username, string project) : base(60f)
         {
             this.username = username;
             this.project = project;
             client = new GitHubClient(new ProductHeaderValue("AREA"));
             client.Credentials = new Credentials(File.ReadAllText("Keys/github.txt"));
             lastMessage = client.Repository.Commit.GetAll(username, project).GetAwaiter().GetResult()[0].Commit.Message;
-            lastRequest = DateTime.Now;
         }
 
-        public void Update(Action<string, string> action)
+        public override void InternalUpdate(Action<string, string> action)
         {
-            if (DateTime.Now.Subtract(lastRequest).TotalSeconds > Constants.timeRef)
+            var commit = client.Repository.Commit.GetAll(username, project).GetAwaiter().GetResult()[0];
+            string msg = commit.Commit.Message;
+            if (msg != lastMessage)
             {
-                var commit = client.Repository.Commit.GetAll(username, project).GetAwaiter().GetResult()[0];
-                string msg = commit.Commit.Message;
-                if (msg != lastMessage)
-                {
-                    action(msg, commit.Author.AvatarUrl);
-                    lastMessage = msg;
-                }
-                lastRequest = DateTime.Now;
+                action(msg, commit.Author.AvatarUrl);
+                lastMessage = msg;
             }
         }
 
         private string lastMessage;
         private string username;
         private string project;
-        private DateTime lastRequest;
-        private string token;
         private GitHubClient client;
     }
 }
