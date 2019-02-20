@@ -45,7 +45,16 @@ namespace AREA_Back
             while (Thread.CurrentThread.IsAlive)
             {
                 foreach (IAction a in actions)
-                    a.Update(reaction.Callback);
+                {
+                    try
+                    {
+                        a.Update(reaction.Callback);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("An error occured: " + e.Message);
+                    }
+                }
             }
         }
     }
