@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AREA_Back.Action
@@ -16,7 +17,7 @@ namespace AREA_Back.Action
             string url = GetLastLink().GetAwaiter().GetResult();
             if (lastUrl != url)
             {
-                action("A new image was uploaded on " + booru.ToString(), url);
+                action("A new image was uploaded on " + booru.ToString().Split('.').Last(), url);
                 lastUrl = url;
             }
         }
