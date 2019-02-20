@@ -4,9 +4,9 @@ using System.Net.Http;
 
 namespace AREA_Back.Action
 {
-    public class Konachan : IAction
+    public class KonachanFavorite : IAction
     {
-        public Konachan(string username) : base(5f)
+        public KonachanFavorite(string username) : base(5f)
         {
             this.username = username;
             using (HttpClient hc = new HttpClient())

@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BooruSharp, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BooruSharp.1.3.6\lib\net45\BooruSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
       <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
     </Reference>
@@ -132,9 +135,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action\ABooru.cs" />
+    <Compile Include="Action\Booru.cs" />
     <Compile Include="Action\GitHub.cs" />
     <Compile Include="Action\IAction.cs" />
-    <Compile Include="Action\Konachan.cs" />
+    <Compile Include="Action\KonachanFavorite.cs" />
     <Compile Include="Action\NHentai.cs" />
     <Compile Include="Endpoint\About.cs" />
     <Compile Include="Program.cs" />
