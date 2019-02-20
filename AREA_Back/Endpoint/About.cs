@@ -23,8 +23,7 @@ namespace AREA_Back.Endpoint
                     Server = new Response.PServer()
                     {
                         Current_time = ((int)((DateTime.Now - new DateTime(1970, 1, 1)).TotalSeconds)),
-                        Services = new Response.PService[]
-                        { }
+                        Services = Program.GetServices()
                     }
                 }));
             });

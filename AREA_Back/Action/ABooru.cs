@@ -6,7 +6,7 @@ namespace AREA_Back.Action
 {
     public class ABooru : IAction
     {
-        public ABooru(BooruSharp.Booru.Booru booru) : base(25f)
+        public ABooru(BooruSharp.Booru.Booru booru) : base(booru.ToString().Split('.').Last(), 5f)
         {
             this.booru = booru;
             id = booru.GetImage(0).GetAwaiter().GetResult().id;
@@ -15,10 +15,29 @@ namespace AREA_Back.Action
         public override void InternalUpdate(Action<string, string> action)
         {
             int lastId = booru.GetImage(0).GetAwaiter().GetResult().id;
-            if (lastId != id)
+            int saveId = lastId;
+            int i = 0;
+            int lastLastId;
+            while (true)
             {
-                action("A new image was uploaded on " + booru.ToString().Split('.').Last(), booru.GetImage(0).GetAwaiter().GetResult().fileUrl.AbsoluteUri);
-                id = lastId;
+                lastLastId = lastId;
+                lastId = booru.GetImage(i).GetAwaiter().GetResult().id;
+                if (lastId != id)
+                {
+                    if (lastId == lastLastId)
+                        continue;
+                    i++;
+                }
+                else
+                    break;
+            }
+            if (i > 0)
+            {
+                if (i > 1)
+                    action(i + " new images was uploaded on " + booru.ToString().Split('.').Last(), booru.GetImage(0).GetAwaiter().GetResult().fileUrl.AbsoluteUri);
+                else
+                    action("An image was uploaded on " + booru.ToString().Split('.').Last(), booru.GetImage(0).GetAwaiter().GetResult().fileUrl.AbsoluteUri);
+                id = saveId;
             }
         }
 

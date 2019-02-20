@@ -6,9 +6,10 @@ namespace AREA_Back.Action
     {
         public abstract void InternalUpdate(Action<string, string> action);
 
-        public IAction(float timer)
+        public IAction(string name, float timer)
         {
             this.timer = timer;
+            Program.AddService(name);
         }
 
         public void Update(Action<string, string> action)

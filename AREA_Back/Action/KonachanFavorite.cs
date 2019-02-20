@@ -6,7 +6,7 @@ namespace AREA_Back.Action
 {
     public class KonachanFavorite : IAction
     {
-        public KonachanFavorite(string username) : base(5f)
+        public KonachanFavorite(string username) : base("Konachan Favorite", 5f)
         {
             this.username = username;
             using (HttpClient hc = new HttpClient())

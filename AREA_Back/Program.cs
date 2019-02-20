@@ -1,14 +1,37 @@
 ﻿using AREA_Back.Action;
 using Nancy.Hosting.Self;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace AREA_Back
 {
     class Program
     {
-        static void Main(string[] args)
+        private static List<Response.PService> services;
+
+        public static Response.PService[] GetServices()
+            => services.ToArray();
+
+        public static void AddService(string name)
         {
+            if (!services.Any(x => x.Name == name))
+                services.Add(new Response.PService()
+                {
+                    Name = name
+                });
+        }
+
+        private static Db db;
+        public static Db GetDb() { return (db); }
+
+        static async Task Main(string[] args)
+        {
+            db = new Db();
+            await db.InitAsync();
+            services = new List<Response.PService>();
             Thread thread = new Thread(new ThreadStart(RunActions));
             thread.Start();
             AutoResetEvent autoEvent = new AutoResetEvent(false);

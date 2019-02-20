@@ -6,7 +6,7 @@ namespace AREA_Back.Action
 {
     public class GitHub : IAction
     {
-        public GitHub(string username, string project) : base(60f)
+        public GitHub(string username, string project) : base("GitHub", 60f)
         {
             this.username = username;
             this.project = project;

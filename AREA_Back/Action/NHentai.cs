@@ -9,7 +9,7 @@ namespace AREA_Back.Action
 {
     class NHentai : IAction
     {
-        public NHentai(string username) : base(5f)
+        public NHentai(string username) : base("NHentai", 5f)
         {
             this.username = username;
             realUsername = username.Split('/').Last();
