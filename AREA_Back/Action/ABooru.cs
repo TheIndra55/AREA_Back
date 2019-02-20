@@ -27,14 +27,18 @@ namespace AREA_Back.Action
                     if (lastId == lastLastId)
                         continue;
                     i++;
+                    if (i == 20)
+                        break;
                 }
                 else
                     break;
             }
             if (i > 0)
             {
-                if (i > 1)
-                    action(i + " new images was uploaded on " + booru.ToString().Split('.').Last(), booru.GetImage(0).GetAwaiter().GetResult().fileUrl.AbsoluteUri);
+                if (i == 20)
+                    action("20+ new images were uploaded on " + booru.ToString().Split('.').Last(), booru.GetImage(0).GetAwaiter().GetResult().fileUrl.AbsoluteUri);
+                else if (i > 1)
+                    action(i + " new images were uploaded on " + booru.ToString().Split('.').Last(), booru.GetImage(0).GetAwaiter().GetResult().fileUrl.AbsoluteUri);
                 else
                     action("An image was uploaded on " + booru.ToString().Split('.').Last(), booru.GetImage(0).GetAwaiter().GetResult().fileUrl.AbsoluteUri);
                 id = saveId;
