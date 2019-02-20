@@ -21,8 +21,9 @@ namespace AREA_Back.Action
             string msg = commit.Commit.Message;
             if (msg != lastMessage)
             {
-                action(msg, commit.Author.AvatarUrl);
                 lastMessage = msg;
+                msg = "New commit by " + commit.Committer.Login + ":" + Environment.NewLine + Environment.NewLine + commit.Commit.Message;
+                action(msg, commit.Author.AvatarUrl);
             }
         }
 

@@ -21,6 +21,6 @@ namespace AREA_Back.Action
         }
 
         private DateTime lastRequest;
-        private float timer;
+        private readonly float timer;
     }
 }
