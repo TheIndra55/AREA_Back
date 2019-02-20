@@ -85,7 +85,7 @@ namespace AREA_Back
                 {
                     try
                     {
-                        a.Update(reaction.Callback);
+                        Task.Run(() => { a.Update(reaction.Callback); });
                     }
                     catch (Exception e)
                     {
