@@ -30,7 +30,7 @@ namespace AREA_Back.Action
                 if (currCount < lastCount)
                     action(username + " removed an image from their favorite.", null);
                 else
-                    action(username + " added an image to their favorite.", (string)json[json.Count - 1].file_url);
+                    action(username + " added an image to their favorite.", (string)json[0].file_url);
                 lastCount = currCount;
             }
         }

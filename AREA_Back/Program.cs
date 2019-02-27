@@ -83,14 +83,17 @@ namespace AREA_Back
             {
                 foreach (IAction a in actions)
                 {
-                    try
+                    Task.Run(() =>
                     {
-                        Task.Run(() => { a.Update(reaction.Callback); });
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("An error occured: " + e.Message);
-                    }
+                        try
+                        {
+                            a.Update(reaction.Callback);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("An error occured: " + e.Message);
+                        }
+                    });
                 }
             }
         }
